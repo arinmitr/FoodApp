@@ -21,22 +21,6 @@
   animation: slide-down 300ms ease-out forwards;
 }
 
-.content button {
-  font: inherit;
-  cursor: pointer;
-  background-color: transparent;
-  border: 1px solid #8a2b06;
-  padding: 0.5rem 2rem;
-  border-radius: 25px;
-  margin-left: 1rem;
-}
-
-.content button:hover {
-  background-color: #5a1a01;
-  border-color: #5a1a01;
-  color: white;
-}
-
 @media (min-width: 768px) {
   .modal {
     width: 40rem;
