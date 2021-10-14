@@ -11,7 +11,7 @@ const HeaderCartButton = (props) => {
   const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
     return curNumber + item.amount
   }, 0)
-  const btnClasses = `${classes.btn} ${btnIsAnimated ? classes.bump : ''}`
+  const btnClasses = `${classes.button} ${btnIsAnimated ? classes.bump : ''}`
   useEffect(() => {
     if (cartCtx.items.length === 0) {
       return
