@@ -6,25 +6,33 @@ import { useEffect, useState } from 'react/cjs/react.development'
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [httpError, setHttpError] = useState()
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch(
-        'https://food-app-794bd-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json'
-      )
-      const data = await response.json()
-
-      const loadedMeals = []
-      for (const key in data) {
-        loadedMeals.push({
-          id: key,
-          name: data[key].name,
-          description: data[key].description,
-          price: data[key].price,
-        })
+      try {
+        const response = await fetch(
+          'https://food-app-794bd-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json'
+        )
+        if (!response.ok) {
+          throw new Error('Something went wrong!')
+        }
+        const data = await response.json()
+        const loadedMeals = []
+        for (const key in data) {
+          loadedMeals.push({
+            id: key,
+            name: data[key].name,
+            description: data[key].description,
+            price: data[key].price,
+          })
+        }
+        setMeals(loadedMeals)
+        setIsLoading(false)
+      } catch (err) {
+        setIsLoading(false)
+        setHttpError(err.message)
       }
-      setMeals(loadedMeals)
-      setIsLoading(false)
     }
     fetchMeals()
   }, [])
@@ -32,6 +40,13 @@ const AvailableMeals = () => {
     return (
       <section className={classes.mealsLoading}>
         <p>Loading...</p>
+      </section>
+    )
+  }
+  if (httpError) {
+    return (
+      <section className={classes.mealsLoading}>
+        <p>{httpError}</p>
       </section>
     )
   }
