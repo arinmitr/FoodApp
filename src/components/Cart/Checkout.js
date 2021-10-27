@@ -1,9 +1,12 @@
 import React from 'react'
 import classes from './Checkout.module.css'
 
-const Checkout = () => {
+const Checkout = (props) => {
+  const confirmHandler = (event) => {
+    event.preventDefault()
+  }
   return (
-    <form action=''>
+    <form onSubmit={confirmHandler} className={classes.form}>
       <div className={classes.control}>
         <label htmlFor='name'>Your Name</label>
         <input type='text' id='name' />
@@ -20,7 +23,14 @@ const Checkout = () => {
         <label htmlFor='postal'>Postal Code</label>
         <input type='text' id='postal' />
       </div>
-      <button>Confirm</button>
+      <div className={classes.actions}>
+        <button type='button' onClick={props.onCancel}>
+          Cancel
+        </button>
+        <button type='submit' className={classes.submit}>
+          Confirm
+        </button>
+      </div>
     </form>
   )
 }
