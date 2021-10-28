@@ -38,9 +38,15 @@ const Checkout = (props) => {
     const formIsValid =
       nameIsValid && streetIsValid && cityIsValid && postalIsValid
 
-    if (formIsValid) {
-      //submit form data
+    if (!formIsValid) {
+      return
     }
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postal: enteredPostal,
+    })
   }
   return (
     <form onSubmit={confirmHandler} className={classes.form}>
