@@ -34,7 +34,6 @@ const Cart = (props) => {
         }),
       }
     )
-    //setIsSubmitting(false)
     setOrdered(true)
     cartCtx.clearCart()
   }
