@@ -8,6 +8,8 @@ import { useState } from 'react/cjs/react.development'
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ordered, setOrdered] = useState(false)
   const cartCtx = useContext(CartContext)
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`
   const hasItems = cartCtx.items.length > 0
@@ -20,8 +22,9 @@ const Cart = (props) => {
   const orderHandler = () => {
     setIsCheckout(true)
   }
-  const submitOrderHandler = (userData) => {
-    fetch(
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true)
+    const response = await fetch(
       'https://food-app-794bd-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json',
       {
         method: 'POST',
@@ -31,6 +34,9 @@ const Cart = (props) => {
         }),
       }
     )
+    //setIsSubmitting(false)
+    setOrdered(true)
+    cartCtx.clearCart()
   }
 
   const cartItems = (
@@ -48,8 +54,8 @@ const Cart = (props) => {
     </ul>
   )
 
-  return (
-    <Modal onClose={props.onClose}>
+  const cartModalContent = (
+    <>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
@@ -70,6 +76,26 @@ const Cart = (props) => {
           )}
         </div>
       )}
+    </>
+  )
+  const submittingModalContent = <p>Order in progress. Please wait...</p>
+
+  const orderedModalContent = (
+    <>
+      <p>Ordered Successfully</p>
+      <div className={classes.actions}>
+        <button className={classes.button} onClick={props.onClose}>
+          Close
+        </button>
+      </div>
+    </>
+  )
+
+  return (
+    <Modal onClose={props.onClose}>
+      {!isSubmitting && cartModalContent}
+      {isSubmitting && !ordered && submittingModalContent}
+      {ordered && orderedModalContent}
     </Modal>
   )
 }
